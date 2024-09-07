@@ -1,16 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using EXCEL_PDF_Practice_ServiceLayer.Interface;
+using System.Collections.Generic;
 
 namespace EXCEL_PDF_Practice_sln.Controllers
 {
     public class ExcelReaderAPIController : ControllerBase
     {
         private readonly IWebHostEnvironment _iwebHostEnvironment;
+        private readonly IExcelPdfPracticeService _excelPdfPracticeService;
 
-        public ExcelReaderAPIController(IWebHostEnvironment iwebHostEnvironment)
+        public ExcelReaderAPIController(IWebHostEnvironment iwebHostEnvironment, IExcelPdfPracticeService excelPdfPracticeService)
         {
             _iwebHostEnvironment = iwebHostEnvironment;
+            _excelPdfPracticeService = excelPdfPracticeService;
         }
 
         public string Index()
@@ -41,7 +45,7 @@ namespace EXCEL_PDF_Practice_sln.Controllers
                     var rows = worksheetPart.Worksheet.Descendants<Row>();
 
                     // 將 Excel 數據傳遞到服務層進行處理
-                    var result = _excelService.ProcessOpenXmlExcel(rows);
+                    var result = _excelPdfPracticeService.GetExcelFromTemplateXlsxContext(rows);
 
                     if (result)
                         return Ok("模板檔案讀取並處理成功");
@@ -53,5 +57,7 @@ namespace EXCEL_PDF_Practice_sln.Controllers
 
             return NotFound("讀取失敗");
         }
+
+        
     }
 }

@@ -1,6 +1,8 @@
 
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using EXCEL_PDF_Practice_ServiceLayer.Implement;
 using EXCEL_PDF_Practice_ServiceLayer.Interface;
+using EXCEL_PDF_Practice_ServiceLayer.Mapping;
 using NLog;
 using NLog.Web;
 
@@ -20,6 +22,9 @@ namespace EXCEL_PDF_Practice_sln
                 //NLog: Setup NLog for Dependency injection
                 builder.Logging.ClearProviders();
                 builder.Host.UseNLog();
+
+                // Add All AutoMapper Profile
+                builder.Services.AddAutoMapper(typeof(ServeiceMappingProfile));
 
                 // Add services to the container.
                 builder.Services.AddControllers();
