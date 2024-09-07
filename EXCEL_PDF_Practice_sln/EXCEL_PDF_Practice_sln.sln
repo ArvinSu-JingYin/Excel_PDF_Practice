@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXCEL_PDF_Practice_sln", "EXCEL_PDF_Practice_sln.csproj", "{FBE56635-11BA-4DF4-921C-FFB0779BFCA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXCEL_PDF_Practice_ServiceLayer", "..\EXCEL_PDF_Practice_ServiceLayer\EXCEL_PDF_Practice_ServiceLayer.csproj", "{16741139-956B-4B55-9C6B-6CD71277818A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FBE56635-11BA-4DF4-921C-FFB0779BFCA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBE56635-11BA-4DF4-921C-FFB0779BFCA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBE56635-11BA-4DF4-921C-FFB0779BFCA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBE56635-11BA-4DF4-921C-FFB0779BFCA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16741139-956B-4B55-9C6B-6CD71277818A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16741139-956B-4B55-9C6B-6CD71277818A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16741139-956B-4B55-9C6B-6CD71277818A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16741139-956B-4B55-9C6B-6CD71277818A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B7CED67-C225-4F5A-9824-9FE7CF89CE96}
+	EndGlobalSection
+EndGlobal
