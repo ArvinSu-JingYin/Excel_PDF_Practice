@@ -1,4 +1,6 @@
 
+using EXCEL_PDF_Practice_ServiceLayer.Implement;
+using EXCEL_PDF_Practice_ServiceLayer.Interface;
 using NLog;
 using NLog.Web;
 
@@ -15,13 +17,13 @@ namespace EXCEL_PDF_Practice_sln
             {
                 var builder = WebApplication.CreateBuilder(args);
 
-                // Add services to the container.
-
-                builder.Services.AddControllers();
-
                 //NLog: Setup NLog for Dependency injection
                 builder.Logging.ClearProviders();
                 builder.Host.UseNLog();
+
+                // Add services to the container.
+                builder.Services.AddControllers();
+                builder.Services.AddScoped<IExcelPdfPracticeService, ExcelPdfPracticeService>();
 
                 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
                 builder.Services.AddEndpointsApiExplorer();
