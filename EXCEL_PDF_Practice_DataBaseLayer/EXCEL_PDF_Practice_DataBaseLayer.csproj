@@ -7,16 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interface\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="DocumentFormat.OpenXml" Version="3.1.0" />
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EXCEL_PDF_Practice_DataBaseLayer\EXCEL_PDF_Practice_DataBaseLayer.csproj" />
     <ProjectReference Include="..\EXCEL_PDF_Practice_ParameterLayer\EXCEL_PDF_Practice_ParameterLayer.csproj" />
   </ItemGroup>
 

@@ -2,9 +2,15 @@
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using EXCEL_PDF_Practice_ServiceLayer.Implement;
 using EXCEL_PDF_Practice_ServiceLayer.Interface;
+using EXCEL_PDF_Practice_DataBaseLayer.Implement;
+using EXCEL_PDF_Practice_DataBaseLayer.Interface;
+using EXCEL_PDF_Practice_sln.Mapping;
 using EXCEL_PDF_Practice_ServiceLayer.Mapping;
+using EXCEL_PDF_Practice_DataBaseLayer.Mapping;
 using NLog;
 using NLog.Web;
+using Microsoft.Extensions.Configuration;
+
 
 namespace EXCEL_PDF_Practice_sln
 {
@@ -23,12 +29,22 @@ namespace EXCEL_PDF_Practice_sln
                 builder.Logging.ClearProviders();
                 builder.Host.UseNLog();
 
+                // ConnectionString Provider
+                builder.Services.AddSingleton<IDataBaseSettingProvider>( p =>
+                {
+                    var configuration = p.GetRequiredService<IConfiguration>();
+                    var connectionString = configuration.GetConnectionString("PracticeProject");
+                    return new DataBaseSettingProvider(connectionString);
+                });
+
                 // Add All AutoMapper Profile
-                builder.Services.AddAutoMapper(typeof(ServeiceMappingProfile));
+                builder.Services.AddAutoMapper(typeof(ServeiceMappingProfile), typeof(ControllerMappingProfile),typeof(DataBaseMappingProfile));
 
                 // Add services to the container.
                 builder.Services.AddControllers();
                 builder.Services.AddScoped<IExcelPdfPracticeService, ExcelPdfPracticeService>();
+
+                builder.Services.AddScoped<IStoreOrderProvider, StoreOrderProvider>();
 
                 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
                 builder.Services.AddEndpointsApiExplorer();

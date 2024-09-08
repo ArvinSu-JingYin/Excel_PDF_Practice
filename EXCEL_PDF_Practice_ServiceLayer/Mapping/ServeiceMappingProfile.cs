@@ -16,11 +16,34 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Mapping
         public ServeiceMappingProfile()
         {
             //Data into ServiceLayer
-            CreateMap<GetExcelFromTemplateXlsxContextSearchModel, GetExcelFromTemplateXlsxContextDataModel>();
+            CreateMap<GetExcelFromTemplateXlsxContextSearchModel, GetExcelFromTemplateXlsxContextDataModel>()
+                .ForMember(x => x.Price,
+                           y => y.MapFrom(z => ParsePrice(z.Price?? "0")))
+                .ForMember(x => x.Quantity,
+                           y => y.MapFrom(z => ParseQuantity(z.Quantity ?? "0")))
+                .ForMember(x => x.OrderDate,
+                           y => y.MapFrom( z => ParseOrderDate(z.OrderDate ?? "0")));
 
             //Data out to ServiceLayer
             CreateMap<GetExcelFromTemplateXlsxContextDataModel, GetExcelFromTemplateXlsxContextResultModel>();
 
+        }
+
+        private decimal ParsePrice(string price)
+        {
+            return decimal.TryParse(price, out var result) ? result : 0;
+        }
+
+        private int ParseQuantity(string quantity)
+        {
+            return int.TryParse(quantity, out var result) ? result : 0;
+        }
+
+        private DateTime ParseOrderDate(string orderDate) 
+        {
+            return DateTime.FromOADate(
+                   double.TryParse(orderDate, out var result)? result : 0
+                );
         }
     }
 }

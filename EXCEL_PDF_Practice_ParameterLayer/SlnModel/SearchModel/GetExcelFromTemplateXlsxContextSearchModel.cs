@@ -10,8 +10,12 @@ namespace EXCEL_PDF_Practice_ParameterLayer.SlnModel.SearchModel
 {
     public class GetExcelFromTemplateXlsxContextSearchModel
     {
-        public Row? row { get; set; }
+        public string? OrderNumber { get; set; }
+        public string? Store { get; set; }
+        public string? ProductName { get; set; }
+        public string? Price { get; set; }
+        public string? OrderDate { get; set; }
+        public string? Quantity { get; set; }
 
-        public string test{ get; set; }
     }
 }
