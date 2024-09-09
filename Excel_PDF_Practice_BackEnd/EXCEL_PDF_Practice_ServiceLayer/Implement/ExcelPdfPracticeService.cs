@@ -70,14 +70,16 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
                     queryList.Add(mapping.OrderNumber);
                 }
 
+                //TODO check sql
                 var query = _storeOrderProvider.GetNonExistentStoreOrders(queryList);
 
                 // Write data to the database
-                if (query.Count() == 0)
+                if (query.Count() != 0)
                 {
                     result = _storeOrderProvider.InsertStoreOrder(mappings) ? "Write successfully"
                         : _cusErroMessageHelper.CusErroCodeHelper("InsertDataFail");
                 }
+                //TODO `query.Count() != 0`reponse massage
             }
             catch (Exception ex)
             {
