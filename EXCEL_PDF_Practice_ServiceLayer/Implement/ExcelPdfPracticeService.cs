@@ -34,6 +34,16 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
             _logger = logger;
         }
 
+        /// <summary>
+        /// Get Excel from template Xlsx
+        /// </summary>
+        /// <returns>Excel file content</returns>
+        /// <info>Author: Arvin; Date: 2024/09/09  </info>
+        /// <history>
+        /// xx.  YYYY/MM/DD   Ver   Author      Comments
+        /// ===  ==========  ====  ==========  ==========
+        /// 01.  2024/09/09  1.00    Arvin       Create Get Excel from template Xlsx
+        /// </history>
         public string GetExcelFromTemplateXlsxContext(List<GetExcelFromTemplateXlsxContextSearchModel> TranTemplateRowList)
         {
             var queryList = new List<string>();
@@ -41,7 +51,7 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
 
             try
             {
-                #region 檢查是否有空欄位
+                #region Check for empty fields
 
                 bool hasEmptyFields = TranTemplateRowList.Any(x => HasEmptyFields(x));
 
@@ -54,7 +64,7 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
 
                 var mappings = _mapper.Map<List<GetExcelFromTemplateXlsxContextDataModel>>(TranTemplateRowList);
 
-                //查資料庫內是否有相同訂單的資料
+                // Check if there is data for the same order in the database
                 foreach (var mapping in mappings.Where(x => !string.IsNullOrEmpty(x.OrderNumber)))
                 {
                     queryList.Add(mapping.OrderNumber);
@@ -62,10 +72,10 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
 
                 var query = _storeOrderProvider.GetNonExistentStoreOrders(queryList);
 
-                //將資料寫入資料庫
+                // Write data to the database
                 if (query.Count() == 0)
                 {
-                    result = _storeOrderProvider.InsertStoreOrder(mappings) ? "寫入成功"
+                    result = _storeOrderProvider.InsertStoreOrder(mappings) ? "Write successfully"
                         : _cusErroMessageHelper.CusErroCodeHelper("InsertDataFail");
                 }
             }
@@ -78,20 +88,36 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
             return result;
         }
 
+
+        /// <summary>
+        /// Checks if the model has any empty fields
+        /// </summary>
+        /// <param name="row">The model to check</param>
+        /// <returns>True if the model has any empty fields, false otherwise</returns>
+        /// <history>
+        /// xx.  YYYY/MM/DD   Ver   Author      Comments
+        /// ===  ==========  ====  ==========  ==========
+        /// 01.  2024/09/09  1.00    Arvin       Create HasEmptyFields
+        /// </history>
+        /// <info>Author: Arvin; Date: 2024/09/09  </info>
         private bool HasEmptyFields(GetExcelFromTemplateXlsxContextSearchModel row)
         {
+            // Get all properties of the model
             var propertiesToCheck = row.GetType().GetProperties();
 
+            // Iterate over each property and check its value for null
             foreach (var prop in propertiesToCheck)
             {
                 var propertyValue = prop.GetValue(row);
 
+                // If any empty field is found, return true immediately
                 if (propertyValue == null)
                 {
                     return true;
                 }
             }
 
+            // If all properties are non-empty, return false
             return false;
         }
     }

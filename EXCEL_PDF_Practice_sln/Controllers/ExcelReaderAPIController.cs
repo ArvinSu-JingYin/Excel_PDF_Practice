@@ -27,16 +27,26 @@ namespace EXCEL_PDF_Practice_sln.Controllers
 
         }
 
+        /// <summary>
+        /// Get Excel from template Xlsx
+        /// </summary>
+        /// <returns>Excel file content</returns>
+        /// <info>Author: Arvin; Date: 2024/09/09  </info>
+        /// <history>
+        /// xx.  YYYY/MM/DD   Ver   Author      Comments
+        /// ===  ==========  ====  ==========  ==========
+        /// 01.  2024/09/09  1.00    Arvin       Create Get Excel from template Xlsx
+        /// </history>
         [HttpGet("/GetExcelFromTemplateXlsx", Name = "GetExcelFromTemplateXlsx")]
         public IActionResult GetExcelFromTemplateXlsx()
         {
-            // 構建文件的相對路徑
+            // Construct the relative path of the file
             var filePath = Path.Combine(_iwebHostEnvironment.ContentRootPath, "template", "FackData20240907.xlsx");
 
             if (!System.IO.File.Exists(filePath))
-                return NotFound("模板檔案不存在");
+                return NotFound("Template file does not exist");
 
-            // 使用 MemoryStream 將檔案讀取到記憶體中
+            // Use MemoryStream to read the file into memory
             byte[] fileBytes;
             using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
@@ -56,16 +66,16 @@ namespace EXCEL_PDF_Practice_sln.Controllers
 
                     if (sheets != null)
                     {
-                        // 假設只讀取第一個工作表
+                        // Assuming only the first worksheet is read
                         var firstSheet = (Sheet)sheets.First();
                         var worksheetPart = (WorksheetPart)workbookPart.GetPartById(firstSheet.Id);
 
-                        // 獲取 Worksheet 並讀取數據
+                        // Get Worksheet and read data
                         var rows = worksheetPart.Worksheet.Descendants<Row>();
 
                         var modelList = new List<GetExcelFromTemplateXlsxContextSearchModel>();
 
-                        // 假設第一行是標題行，跳過它
+                        // Assuming the first row is the header row, skip it
                         foreach (var row in rows.Skip(1))
                         {
                             var cells = row.Elements<Cell>().ToArray();
@@ -83,7 +93,7 @@ namespace EXCEL_PDF_Practice_sln.Controllers
                             modelList.Add(model);
                         }
 
-                        // 將 Excel 數據傳遞到服務層進行處理
+                        // Pass Excel data to the service layer for processing
                         var result = _excelPdfPracticeService.GetExcelFromTemplateXlsxContext(modelList);
 
                         return Ok(result);
@@ -91,21 +101,41 @@ namespace EXCEL_PDF_Practice_sln.Controllers
                 }
             }
 
-            return NotFound("讀取失敗");
+            return NotFound("Failed to read");
         }
 
+        /// <summary>
+        /// Get the value of a cell
+        /// </summary>
+        /// <param name="cell">Cell</param>
+        /// <param name="workbookPart">Workbook part</param>
+        /// <returns>Cell value</returns>
+        /// <info>Author: Arvin; Date: 2024/09/09  </info>
+        /// <history>
+        /// xx.  YYYY/MM/DD   Ver   Author      Comments
+        /// 01.  2024/09/09  1.00    Arvin       Create Get the value of a cell
+        /// </history>
         private string GetCellValue(Cell cell, WorkbookPart workbookPart)
         {
+            // Define variable value and initialize it with the cell value
             var value = cell?.CellValue?.InnerText;
 
+            // If the cell type is SharedString, get the corresponding value from the shared string table
             if (cell.DataType != null && cell.DataType == CellValues.SharedString)
             {
-                return workbookPart.SharedStringTablePart.SharedStringTable
+                // Get the shared string table from the workbook part's shared string table part
+                var sharedStringTable = workbookPart.SharedStringTablePart.SharedStringTable;
+
+                // Get the corresponding shared string item from the shared string table
+                var sharedStringItem = sharedStringTable
                     .Elements<SharedStringItem>()
-                    .ElementAt(int.Parse(value))
-                    .InnerText;
+                    .ElementAt(int.Parse(value));
+
+                // Get the content from the shared string item and return
+                return sharedStringItem.InnerText;
             }
 
+            // If the cell type is not SharedString, directly return the cell value
             return value;
         }
     }

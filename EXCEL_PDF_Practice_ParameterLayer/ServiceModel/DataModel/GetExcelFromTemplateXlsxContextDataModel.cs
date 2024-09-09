@@ -9,11 +9,22 @@ namespace EXCEL_PDF_Practice_ParameterLayer.ServiceModel.DataModel
 {
     public class GetExcelFromTemplateXlsxContextDataModel
     {
+        /// <summary>Order Number</summary>
         public string? OrderNumber { get; set; }
+
+        /// <summary>Store</summary>
         public string? Store { get; set; }
+
+        /// <summary>Product Name</summary>
         public string? ProductName { get; set; }
+
+        /// <summary>Price</summary>
         public decimal Price { get; set; }
+
+        /// <summary>Order Date</summary>
         public DateTime OrderDate { get; set; }
+
+        /// <summary>Quantity</summary>
         public int? Quantity { get; set; }
 
     }

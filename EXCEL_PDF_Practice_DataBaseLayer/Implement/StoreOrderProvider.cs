@@ -34,6 +34,17 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get Non Existent Store Orders
+        /// </summary>
+        /// <param name="orderList">The list of order numbers to check</param>
+        /// <returns>A list of order numbers that do not exist in the database</returns>
+        /// <history>
+        /// xx.  YYYY/MM/DD   Ver   Author      Comments
+        /// ===  ==========  ====  ==========  ==========
+        /// 01.  2024/09/09  1.00    Arvin       Create GetNonExistentStoreOrders
+        /// </history>
+        /// <info>Author: Arvin; Date: 2024/09/09  </info>
         public IEnumerable<dynamic> GetNonExistentStoreOrders(List<string> orderList)
         {
             var sqlList = new List<string>();
@@ -93,6 +104,16 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
             }
         }
 
+        /// <summary>
+        /// Insert Store Order
+        /// </summary>
+        /// <param name="dataModel">The list of data models to insert</param>
+        /// <returns>True if the insertion was successful, false otherwise</returns>
+        /// <history>
+        /// xx.  YYYY/MM/DD   Ver   Author      Comments
+        /// ===  ==========  ====  ==========  ==========
+        /// 01.  2024/09/09  1.00    Arvin       Create InsertStoreOrder
+        /// </history>
         public bool InsertStoreOrder(List<GetExcelFromTemplateXlsxContextDataModel> dataModel)
         {
             var dtoLists = _mapper.Map<List<StoreOrderDto>>(dataModel);
