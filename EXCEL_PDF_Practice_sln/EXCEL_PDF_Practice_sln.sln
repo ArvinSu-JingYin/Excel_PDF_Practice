@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EXCEL_PDF_Practice_NUnit", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EXCEL_PDF_Practice_ParameterLayer", "..\EXCEL_PDF_Practice_ParameterLayer\EXCEL_PDF_Practice_ParameterLayer.csproj", "{B1BE07B2-0FAE-43CD-BDDD-836F8C95AC4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXCEL_PDF_Practice_DataBaseLayer", "..\EXCEL_PDF_Practice_DataBaseLayer\EXCEL_PDF_Practice_DataBaseLayer.csproj", "{D066448E-A730-4D97-B147-E63AC5440E60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EXCEL_PDF_Practice_DataBaseLayer", "..\EXCEL_PDF_Practice_DataBaseLayer\EXCEL_PDF_Practice_DataBaseLayer.csproj", "{D066448E-A730-4D97-B147-E63AC5440E60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonHelper", "..\CommonHelper\CommonHelper.csproj", "{1E6A1F66-A47B-49C3-8C9C-47A5A0ACCFB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{D066448E-A730-4D97-B147-E63AC5440E60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D066448E-A730-4D97-B147-E63AC5440E60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D066448E-A730-4D97-B147-E63AC5440E60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E6A1F66-A47B-49C3-8C9C-47A5A0ACCFB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E6A1F66-A47B-49C3-8C9C-47A5A0ACCFB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E6A1F66-A47B-49C3-8C9C-47A5A0ACCFB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E6A1F66-A47B-49C3-8C9C-47A5A0ACCFB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

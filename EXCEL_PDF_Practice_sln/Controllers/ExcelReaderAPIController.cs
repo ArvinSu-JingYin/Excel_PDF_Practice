@@ -66,7 +66,7 @@ namespace EXCEL_PDF_Practice_sln.Controllers
                         var modelList = new List<GetExcelFromTemplateXlsxContextSearchModel>();
 
                         // 假設第一行是標題行，跳過它
-                        foreach (var row in rows.Skip(1)) 
+                        foreach (var row in rows.Skip(1))
                         {
                             var cells = row.Elements<Cell>().ToArray();
 
@@ -86,10 +86,7 @@ namespace EXCEL_PDF_Practice_sln.Controllers
                         // 將 Excel 數據傳遞到服務層進行處理
                         var result = _excelPdfPracticeService.GetExcelFromTemplateXlsxContext(modelList);
 
-                        if (result)
-                            return Ok("模板檔案讀取並處理成功");
-                        else
-                            return StatusCode(500, "處理模板檔案時發生錯誤");
+                        return Ok(result);
                     }
                 }
             }

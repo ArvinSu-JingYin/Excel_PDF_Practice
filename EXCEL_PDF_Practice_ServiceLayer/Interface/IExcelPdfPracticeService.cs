@@ -13,6 +13,6 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Interface
     public interface IExcelPdfPracticeService
     {
         
-        public bool GetExcelFromTemplateXlsxContext(List<GetExcelFromTemplateXlsxContextSearchModel> TranTemplateRows);
+        public string GetExcelFromTemplateXlsxContext(List<GetExcelFromTemplateXlsxContextSearchModel> TranTemplateRows);
     }
 }

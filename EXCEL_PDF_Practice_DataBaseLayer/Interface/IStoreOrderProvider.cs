@@ -9,6 +9,8 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Interface
 {
     public interface IStoreOrderProvider
     {
-        public string InsertStoreOrder(List<GetExcelFromTemplateXlsxContextDataModel> dataModel);
+        public bool InsertStoreOrder(List<GetExcelFromTemplateXlsxContextDataModel> dataModel);
+
+        public IEnumerable<dynamic> GetNonExistentStoreOrders(List<string> orderList);
     }
 }

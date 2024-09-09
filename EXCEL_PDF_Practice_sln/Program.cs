@@ -10,6 +10,8 @@ using EXCEL_PDF_Practice_DataBaseLayer.Mapping;
 using NLog;
 using NLog.Web;
 using Microsoft.Extensions.Configuration;
+using CommonHelper.Interface;
+using CommonHelper.Implement;
 
 
 namespace EXCEL_PDF_Practice_sln
@@ -45,6 +47,8 @@ namespace EXCEL_PDF_Practice_sln
                 builder.Services.AddScoped<IExcelPdfPracticeService, ExcelPdfPracticeService>();
 
                 builder.Services.AddScoped<IStoreOrderProvider, StoreOrderProvider>();
+
+                builder.Services.AddScoped<ICusErroMessageHelper, CusErroMessageHelper>();
 
                 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
                 builder.Services.AddEndpointsApiExplorer();

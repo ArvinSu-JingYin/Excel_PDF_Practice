@@ -13,6 +13,7 @@ using System.Data;
 using AutoMapper;
 using DocumentFormat.OpenXml.InkML;
 using EXCEL_PDF_Practice_ParameterLayer.DataBaseModel.DataDto;
+using EXCEL_PDF_Practice_ParameterLayer.DataBaseModel.ResultDto;
 
 
 namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
@@ -33,7 +34,66 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
             _mapper = mapper;
         }
 
-        public string InsertStoreOrder(List<GetExcelFromTemplateXlsxContextDataModel> dataModel)
+        public IEnumerable<dynamic> GetNonExistentStoreOrders(List<string> orderList)
+        {
+            var sqlList = new List<string>();
+
+            StringBuilder sql = new StringBuilder();
+            DynamicParameters obj = new DynamicParameters();
+
+            sql.Append("WITH TempData AS" + Environment.NewLine);
+            sql.Append("(" + Environment.NewLine);
+            sql.Append("    SELECT OrderNumber" + Environment.NewLine);
+            sql.Append("    FROM (  VALUES" + Environment.NewLine);
+
+            if (orderList != null && orderList.Count == 1)
+            {
+                sql.Append("(@orderList)" + Environment.NewLine);
+                obj.Add($"@orderList", orderList, DbType.String);
+            }
+            else
+            {
+                for (int i = 0; i < orderList.Count; i++)
+                {
+                    sqlList.Add($"(@orderList{i})");
+                    obj.Add($"@orderList{i}", orderList[i]?? "0", DbType.String);
+                }
+
+                sql.Append(string.Join(", ", sqlList));
+            }
+
+            sql.Append("         ) AS TempData(OrderNumber)" + Environment.NewLine);
+            sql.Append(")" + Environment.NewLine);
+            sql.Append("SELECT temp.OrderNumber" + Environment.NewLine);
+            sql.Append("FROM TempData temp" + Environment.NewLine);
+            sql.Append("WHERE NOT EXISTS" + Environment.NewLine);
+            sql.Append("(" + Environment.NewLine);
+            sql.Append("    SELECT 1" + Environment.NewLine);
+            sql.Append("    FROM [PracticeProject_StoreOrder] p" + Environment.NewLine);
+            sql.Append("    WHERE p.OrderNumber = temp.OrderNumber" + Environment.NewLine);
+            sql.Append(")" + Environment.NewLine);
+
+            using (var conn = new SqlConnection(_dataBaseSettingProvider))
+            {
+                conn.Open();
+                try
+                {
+                    return conn.Query(sql.ToString(), obj); ;
+                }
+                catch (Exception ex)
+                {
+                    var result = new List<dynamic>();
+
+                    _logger.LogError($"Error occurred in [ GetNonExistentStoreOrders ] : {ex}");
+
+                    result.Add("Fail");
+
+                    return result;
+                }
+            }
+        }
+
+        public bool InsertStoreOrder(List<GetExcelFromTemplateXlsxContextDataModel> dataModel)
         {
             var dtoLists = _mapper.Map<List<StoreOrderDto>>(dataModel);
             StoreOrderDto dto = new StoreOrderDto();
@@ -91,13 +151,13 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
                         var affectedRows = conn.Execute(sql.ToString(), obj, transaction: transaction);
                         transaction.Commit();
                         _logger.LogInformation($"[ InsertStoreOrder ] succeeded. Affected rows: {affectedRows}.");
-                        return "OK";
+                        return true;
                     }
                     catch (Exception ex)
                     {
                         transaction.Rollback();
                         _logger.LogError($"Error occurred in [ InsertStoreOrder ] : {ex}");
-                        return "Fail";
+                        return false;
                     }
 
                 }

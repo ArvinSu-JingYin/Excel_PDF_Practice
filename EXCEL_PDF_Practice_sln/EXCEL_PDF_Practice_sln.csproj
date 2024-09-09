@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommonHelper\CommonHelper.csproj" />
     <ProjectReference Include="..\EXCEL_PDF_Practice_DataBaseLayer\EXCEL_PDF_Practice_DataBaseLayer.csproj" />
     <ProjectReference Include="..\EXCEL_PDF_Practice_ParameterLayer\EXCEL_PDF_Practice_ParameterLayer.csproj" />
     <ProjectReference Include="..\EXCEL_PDF_Practice_ServiceLayer\EXCEL_PDF_Practice_ServiceLayer.csproj" />
