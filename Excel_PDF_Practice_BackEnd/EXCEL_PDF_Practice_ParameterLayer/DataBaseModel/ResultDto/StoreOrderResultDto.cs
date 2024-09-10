@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EXCEL_PDF_Practice_ParameterLayer.BaseModel;
 
 namespace EXCEL_PDF_Practice_ParameterLayer.DataBaseModel.ResultDto
 {
-    public class StoreOrderResultDto
+    public class StoreOrderResultDto : BaseModelDto
     {
         /// <summary>Order Number</summary>
         public string? OrderNumber { get; set; }
