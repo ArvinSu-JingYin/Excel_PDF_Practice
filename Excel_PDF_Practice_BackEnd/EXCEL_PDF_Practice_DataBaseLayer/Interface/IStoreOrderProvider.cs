@@ -9,6 +9,8 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Interface
 {
     public interface IStoreOrderProvider
     {
+        public IEnumerable<dynamic> GetStoreOrders(string num);
+
         /// <summary>
         /// Inserts a list of store orders into the database.
         /// </summary>

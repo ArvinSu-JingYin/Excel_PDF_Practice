@@ -120,10 +120,19 @@
   <data name="ColumsEmpty" xml:space="preserve">
     <value>欄位內含有空值</value>
   </data>
+  <data name="DataBaseErro" xml:space="preserve">
+    <value>伺服器存取異常</value>
+  </data>
+  <data name="ExistingOrder" xml:space="preserve">
+    <value>已存在訂單</value>
+  </data>
   <data name="InsertDataFail" xml:space="preserve">
     <value>寫入資料庫失敗</value>
   </data>
   <data name="SystemErro" xml:space="preserve">
     <value>系統異常請洽相關人員</value>
+  </data>
+  <data name="WriteSuccess" xml:space="preserve">
+    <value>寫入成功</value>
   </data>
 </root>

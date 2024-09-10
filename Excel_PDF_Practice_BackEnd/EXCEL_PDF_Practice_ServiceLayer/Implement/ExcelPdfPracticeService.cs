@@ -70,16 +70,21 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
                     queryList.Add(mapping.OrderNumber);
                 }
 
-                //TODO check sql
                 var query = _storeOrderProvider.GetNonExistentStoreOrders(queryList);
 
                 // Write data to the database
-                if (query.Count() != 0)
+                if (query.Count() == queryList.Count())
                 {
-                    result = _storeOrderProvider.InsertStoreOrder(mappings) ? "Write successfully"
-                        : _cusErroMessageHelper.CusErroCodeHelper("InsertDataFail");
+                    result = _storeOrderProvider.InsertStoreOrder(mappings) ? 
+                          _cusErroMessageHelper.CusErroCodeHelper("WriteSuccess") :
+                          _cusErroMessageHelper.CusErroCodeHelper("InsertDataFail");
                 }
-                //TODO `query.Count() != 0`reponse massage
+                else 
+                {
+                    //TODO Show mutiple ExistentOrders
+                    result = _cusErroMessageHelper.CusErroCodeHelper("ExistingOrder");
+                }
+
             }
             catch (Exception ex)
             {
@@ -96,12 +101,12 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
         /// </summary>
         /// <param name="row">The model to check</param>
         /// <returns>True if the model has any empty fields, false otherwise</returns>
+        /// <info>Author: Arvin; Date: 2024/09/09  </info>
         /// <history>
         /// xx.  YYYY/MM/DD   Ver   Author      Comments
         /// ===  ==========  ====  ==========  ==========
         /// 01.  2024/09/09  1.00    Arvin       Create HasEmptyFields
         /// </history>
-        /// <info>Author: Arvin; Date: 2024/09/09  </info>
         private bool HasEmptyFields(GetExcelFromTemplateXlsxContextSearchModel row)
         {
             // Get all properties of the model

@@ -70,6 +70,24 @@ namespace EXCEL_PDF_Practice_ParameterLayer {
         }
         
         /// <summary>
+        ///   查詢類似 伺服器存取異常 的當地語系化字串。
+        /// </summary>
+        public static string DataBaseErro {
+            get {
+                return ResourceManager.GetString("DataBaseErro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 已存在訂單 的當地語系化字串。
+        /// </summary>
+        public static string ExistingOrder {
+            get {
+                return ResourceManager.GetString("ExistingOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 寫入資料庫失敗 的當地語系化字串。
         /// </summary>
         public static string InsertDataFail {
@@ -84,6 +102,15 @@ namespace EXCEL_PDF_Practice_ParameterLayer {
         public static string SystemErro {
             get {
                 return ResourceManager.GetString("SystemErro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 寫入成功 的當地語系化字串。
+        /// </summary>
+        public static string WriteSuccess {
+            get {
+                return ResourceManager.GetString("WriteSuccess", resourceCulture);
             }
         }
     }

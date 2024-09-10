@@ -14,6 +14,7 @@ using AutoMapper;
 using DocumentFormat.OpenXml.InkML;
 using EXCEL_PDF_Practice_ParameterLayer.DataBaseModel.DataDto;
 using EXCEL_PDF_Practice_ParameterLayer.DataBaseModel.ResultDto;
+using CommonHelper.Interface;
 
 
 namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
@@ -23,15 +24,56 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
         private readonly string _dataBaseSettingProvider;
         private readonly ILogger<StoreOrderProvider> _logger;
         private readonly IMapper _mapper;
+        private readonly ICusErroMessageHelper _messageHelper;
 
         public StoreOrderProvider(
             IDataBaseSettingProvider dataBaseSettingProvider,
             ILogger<StoreOrderProvider> logger,
-            IMapper mapper)
+            IMapper mapper,
+            ICusErroMessageHelper cusErroMessageHelper)
         {
             _dataBaseSettingProvider = dataBaseSettingProvider.ConnectionString;
             _logger = logger;
             _mapper = mapper;
+            _messageHelper = cusErroMessageHelper;
+        }
+
+        public IEnumerable<dynamic> GetStoreOrders(string num) 
+        { 
+            StringBuilder sql = new StringBuilder();
+            DynamicParameters obj = new DynamicParameters();
+
+            sql.Append("SELECT" + Environment.NewLine); 
+            sql.Append("    OrderNumber," + Environment.NewLine);
+            sql.Append("    Store," + Environment.NewLine);
+            sql.Append("    ProductName," + Environment.NewLine);
+            sql.Append("    Price," + Environment.NewLine);
+            sql.Append("    OrderDate," + Environment.NewLine);
+            sql.Append("    Quantity" + Environment.NewLine);
+            sql.Append("FROM [PracticeProject_StoreOrder]");
+            sql.Append("WHERE 1 = 1");
+            sql.Append("    AND OrderNumber = @OrderNumber");
+
+            obj.Add("@OrderNumber", num, DbType.String);
+
+            using (var conn = new SqlConnection(_dataBaseSettingProvider))
+            {
+                conn.Open();
+                try
+                {
+                    return conn.Query(sql.ToString(), obj);
+                }
+                catch (Exception ex)
+                {
+                    var result = new List<dynamic>();
+
+                    _logger.LogError($"Error occurred in [ GetStoreOrders ] : {ex}");
+
+                    result.Add(_messageHelper.CusErroCodeHelper("DataBaseErro"));
+
+                    return result;
+                }
+            }
         }
 
         /// <summary>
@@ -89,7 +131,7 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
                 conn.Open();
                 try
                 {
-                    return conn.Query(sql.ToString(), obj); ;
+                    return conn.Query(sql.ToString(), obj);
                 }
                 catch (Exception ex)
                 {
@@ -97,7 +139,7 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
 
                     _logger.LogError($"Error occurred in [ GetNonExistentStoreOrders ] : {ex}");
 
-                    result.Add("Fail");
+                    result.Add(_messageHelper.CusErroCodeHelper("DataBaseErro"));
 
                     return result;
                 }
