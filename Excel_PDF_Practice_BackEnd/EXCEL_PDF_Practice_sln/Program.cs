@@ -12,6 +12,7 @@ using NLog.Web;
 using Microsoft.Extensions.Configuration;
 using CommonHelper.Interface;
 using CommonHelper.Implement;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace EXCEL_PDF_Practice_sln
@@ -45,6 +46,7 @@ namespace EXCEL_PDF_Practice_sln
                 // Add services to the container.
                 builder.Services.AddControllers();
                 builder.Services.AddScoped<IExcelPdfPracticeService, ExcelPdfPracticeService>();
+                builder.Services.AddScoped<IPdfFromDataService, PdfFromDataService>();
 
                 builder.Services.AddScoped<IStoreOrderProvider, StoreOrderProvider>();
 
