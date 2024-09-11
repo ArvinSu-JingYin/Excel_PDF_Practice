@@ -14,7 +14,12 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Mapping
     {
         public DataBaseMappingProfile() {
 
+            //in
             CreateMap<GetExcelFromTemplateXlsxContextDataModel, StoreOrderDto>();
+
+
+            //out
+            CreateMap< dynamic, StoreOrderDto>(); 
         }
     }
 }

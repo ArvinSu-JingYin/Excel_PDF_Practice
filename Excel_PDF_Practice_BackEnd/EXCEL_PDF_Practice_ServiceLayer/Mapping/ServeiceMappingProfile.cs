@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EXCEL_PDF_Practice_ParameterLayer;
+using EXCEL_PDF_Practice_ParameterLayer.DataBaseModel.ResultDto;
 using EXCEL_PDF_Practice_ParameterLayer.ServiceModel.DataModel;
 using EXCEL_PDF_Practice_ParameterLayer.ServiceModel.ResultModel;
 using EXCEL_PDF_Practice_ParameterLayer.SlnModel.SearchModel;
@@ -23,6 +24,14 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Mapping
                            y => y.MapFrom(z => ParseQuantity(z.Quantity ?? "0")))
                 .ForMember(x => x.OrderDate,
                            y => y.MapFrom( z => ParseOrderDate(z.OrderDate ?? "0")));
+
+            CreateMap< StoreOrderResultDto, PdfFromDataBaseModel>()
+                .ForMember(x => x.Price,
+                           y => y.MapFrom(z => z.Price.ToString()))
+                .ForMember(x => x.Quantity,
+                           y => y.MapFrom(z => z.Quantity.ToString()))
+                .ForMember(x => x.OrderDate,
+                           y => y.MapFrom(z => z.OrderDate.ToString())); ;
 
             //Data out to ServiceLayer
             CreateMap<GetExcelFromTemplateXlsxContextDataModel, GetExcelFromTemplateXlsxContextResultModel>();

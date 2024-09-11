@@ -4,6 +4,8 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Interface
 {
     public interface IPdfFromDataService
     {
-        public PdfDocument BuildPdfFromDataBase();
+        public PdfDocument BuildPdfFromDataBaseTest();
+
+        public PdfDocument BuildPdfFromDataBase(string num);
     }
 }

@@ -38,12 +38,12 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
             _messageHelper = cusErroMessageHelper;
         }
 
-        public IEnumerable<dynamic> GetStoreOrders(string num) 
-        { 
+        public IEnumerable<dynamic> GetStoreOrders(string num)
+        {
             StringBuilder sql = new StringBuilder();
             DynamicParameters obj = new DynamicParameters();
 
-            sql.Append("SELECT" + Environment.NewLine); 
+            sql.Append("SELECT" + Environment.NewLine);
             sql.Append("    OrderNumber," + Environment.NewLine);
             sql.Append("    Store," + Environment.NewLine);
             sql.Append("    ProductName," + Environment.NewLine);
@@ -51,27 +51,55 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
             sql.Append("    OrderDate," + Environment.NewLine);
             sql.Append("    Quantity" + Environment.NewLine);
             sql.Append("FROM [PracticeProject_StoreOrder]");
-            sql.Append("WHERE 1 = 1");
-            sql.Append("    AND OrderNumber = @OrderNumber");
 
-            obj.Add("@OrderNumber", num, DbType.String);
+            if (!string.IsNullOrEmpty(num))
+            {
+                sql.Append("WHERE 1 = 1");
+                sql.Append("    AND OrderNumber = @OrderNumber");
+
+                obj.Add("@OrderNumber", num, DbType.String);
+            }
 
             using (var conn = new SqlConnection(_dataBaseSettingProvider))
             {
+                var storeOrderResultDto = new List<StoreOrderResultDto>();
+
                 conn.Open();
                 try
                 {
-                    return conn.Query(sql.ToString(), obj);
+                    var queries = conn.Query(sql.ToString(), obj);
+
+                    foreach (var query in queries)
+                    {
+                        //var data = new StoreOrderResultDto
+                        //{
+                        //    OrderNumber = query.Result.OrderNumber,
+                        //    Store = query.Result.Store,
+                        //    ProductName = query.Result.ProductName,
+                        //    Price = query.Result.Price,
+                        //    Quantity = query.Result.Quantity,
+                        //    OrderDate = query.Result.OrderDate,
+                        //};
+
+                        var data = _mapper.Map<StoreOrderResultDto>(query);
+
+                        storeOrderResultDto.Add(data);
+                    }
+
+                    return storeOrderResultDto;
                 }
                 catch (Exception ex)
                 {
-                    var result = new List<dynamic>();
-
                     _logger.LogError($"Error occurred in [ GetStoreOrders ] : {ex}");
 
-                    result.Add(_messageHelper.CusErroCodeHelper("DataBaseErro"));
+                    var erro = new StoreOrderResultDto
+                    {
+                        Erro = _messageHelper.CusErroCodeHelper("DataBaseErro")
+                    };
 
-                    return result;
+                    storeOrderResultDto.Add(erro);
+
+                    return storeOrderResultDto;
                 }
             }
         }
@@ -109,7 +137,7 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
                 for (int i = 0; i < orderList.Count; i++)
                 {
                     sqlList.Add($"(@orderList{i})");
-                    obj.Add($"@orderList{i}", orderList[i]?? "0", DbType.String);
+                    obj.Add($"@orderList{i}", orderList[i] ?? "0", DbType.String);
                 }
 
                 sql.Append(string.Join(", ", sqlList));

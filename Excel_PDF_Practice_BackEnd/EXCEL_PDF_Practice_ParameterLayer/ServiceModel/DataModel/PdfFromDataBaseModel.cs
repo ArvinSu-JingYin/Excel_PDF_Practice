@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EXCEL_PDF_Practice_ParameterLayer.SysBaseModel;
 
-namespace EXCEL_PDF_Practice_ParameterLayer.DataBaseModel.ResultDto
+namespace EXCEL_PDF_Practice_ParameterLayer.ServiceModel.DataModel
 {
-    public class StoreOrderResultDto : BaseModel
+    public class PdfFromDataBaseModel
     {
         /// <summary>Order Number</summary>
         public string? OrderNumber { get; set; }
@@ -19,12 +18,12 @@ namespace EXCEL_PDF_Practice_ParameterLayer.DataBaseModel.ResultDto
         public string? ProductName { get; set; }
 
         /// <summary>Price</summary>
-        public decimal Price { get; set; }
+        public string? Price { get; set; }
 
         /// <summary>Order Date</summary>
-        public DateTime OrderDate { get; set; }
+        public string? OrderDate { get; set; }
 
         /// <summary>Quantity</summary>
-        public int? Quantity { get; set; }
+        public string? Quantity { get; set; }
     }
 }

@@ -15,12 +15,12 @@ namespace EXCEL_PDF_Practice_sln.Controllers
             _pdfFromDataService = pdfFromDataService;
         }
 
-        [HttpGet("/GetPdfFromDataBase", Name= "GetPdfFromDataBase")]
-        public IActionResult GetPdfFromDataBase()
+        [HttpPost("/GetPdfFromDataBase", Name= "GetPdfFromDataBase")]
+        public IActionResult GetPdfFromDataBase(string num = null)
         {
             PdfDocument document = new PdfDocument();
 
-            document = _pdfFromDataService.BuildPdfFromDataBase();
+            document = _pdfFromDataService.BuildPdfFromDataBase(num);
 
             // 將 PDF 文件存儲在內存流中
             using (MemoryStream stream = new MemoryStream())

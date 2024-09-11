@@ -7,6 +7,11 @@ using PdfSharpCore.Pdf;
 using MigraDocCore.Rendering;
 using MigraDocCore.DocumentObjectModel;
 using MigraDocCore.DocumentObjectModel.Tables;
+using EXCEL_PDF_Practice_DataBaseLayer;
+using EXCEL_PDF_Practice_DataBaseLayer.Interface;
+using EXCEL_PDF_Practice_DataBaseLayer.Implement;
+using EXCEL_PDF_Practice_ParameterLayer.ServiceModel.DataModel;
+using EXCEL_PDF_Practice_ParameterLayer.DataBaseModel.ResultDto;
 
 namespace EXCEL_PDF_Practice_ServiceLayer.Implement
 {
@@ -14,16 +19,16 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
     {
         private readonly ILogger<PdfFromDataService> _logger;
         private readonly IMapper _mapper;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IStoreOrderProvider _storeOrderProvider;
 
         public PdfFromDataService(
             ILogger<PdfFromDataService> logger,
             IMapper mapper,
-            IServiceProvider serviceProvider)
+            IStoreOrderProvider storeOrderProvider)
         {
             _logger = logger;
             _mapper = mapper;
-            _serviceProvider = serviceProvider;
+            _storeOrderProvider = storeOrderProvider;
         }
 
         public PdfDocument BuildPdfFromDataBaseTest()
@@ -70,7 +75,7 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
             }
         }
 
-        public PdfDocument BuildPdfFromDataBase()
+        public PdfDocument BuildPdfFromDataBase(string num)
         {
             // 建立文檔
             var document = new Document();
@@ -112,7 +117,23 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
             AddFieldRowToTable(table, "Order Number", "Store", "Product Name", "Price", "Order Date", "Quantity");
 
             // 添加欄位對應的值（Value），顯示在第二行
-            AddValueRowToTable(table, "123456", "ABC Store", "Product XYZ", "$59.99", DateTime.Now.ToString("yyyy-MM-dd"), "2");
+            var queries = _storeOrderProvider.GetStoreOrders(num);
+
+            for (int i = 0; i < queries.Count(); i++)
+            {
+                StoreOrderResultDto query = queries.ElementAt(i);
+                var tranQuery = _mapper.Map<PdfFromDataBaseModel>(query);
+
+                AddValueRowToTable(
+                    table,
+                    tranQuery.OrderNumber,
+                    tranQuery.Store,
+                    tranQuery.ProductName,
+                    tranQuery.Price,
+                    tranQuery.OrderDate,
+                    tranQuery.Quantity
+                    );
+            }
 
             // 生成 PDF 文件
             var pdfDocument = RenderPdf(document);
@@ -122,7 +143,19 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
         // 添加欄位名稱的行（第一行）
         private void AddFieldRowToTable(Table table, string field1, string field2, string field3, string field4, string field5, string field6)
         {
+
             var row = table.AddRow();
+
+            // 設置欄位名稱字體
+            foreach (Cell cell in row.Cells)
+            {
+                var paragraph = cell.AddParagraph();
+                paragraph.Format.Font.Name = "NotoSerifTC-Light";
+                paragraph.Format.Font.Size = 12;
+                paragraph.Format.Font.Bold = true;
+                paragraph.Format.Alignment = ParagraphAlignment.Center;
+            }
+
             row.Cells[0].AddParagraph(field1).Format.Alignment = ParagraphAlignment.Center;
             row.Cells[1].AddParagraph(field2).Format.Alignment = ParagraphAlignment.Center;
             row.Cells[2].AddParagraph(field3).Format.Alignment = ParagraphAlignment.Center;
@@ -141,6 +174,16 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
         private void AddValueRowToTable(Table table, string value1, string value2, string value3, string value4, string value5, string value6)
         {
             var row = table.AddRow();
+
+            // 設置欄位值字體
+            foreach (Cell cell in row.Cells)
+            {
+                var paragraph = cell.AddParagraph();
+                paragraph.Format.Font.Name = "NotoSerifTC-Light";
+                paragraph.Format.Font.Size = 10;
+                paragraph.Format.Alignment = ParagraphAlignment.Center;
+            }
+
             row.Cells[0].AddParagraph(value1).Format.Alignment = ParagraphAlignment.Center;
             row.Cells[1].AddParagraph(value2).Format.Alignment = ParagraphAlignment.Center;
             row.Cells[2].AddParagraph(value3).Format.Alignment = ParagraphAlignment.Center;
@@ -151,6 +194,11 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
 
         private PdfDocument RenderPdf(Document document)
         {
+            // 載入中文字體
+            var fontResolver = new FontResolver();
+            fontResolver.GetFont("NotoSerifTC-Light.ttf");
+            GlobalFontSettings.FontResolver = fontResolver;
+
             // 使用 PdfDocumentRenderer 將 MigraDoc 文檔渲染為 PdfSharpCore 的 PdfDocument
             var pdfRenderer = new PdfDocumentRenderer(true);
             pdfRenderer.Document = document;
@@ -165,19 +213,20 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
     internal class FontResolver : IFontResolver
     {
         private readonly string BaseFontPath = @"C:\Arvin\GitHub\Excel_PDF_Practice\Excel_PDF_Practice_BackEnd\EXCEL_PDF_Practice_sln\Source\Font\";
+        private string cusFontName = string.Empty;
 
         public string DefaultFontName => "TW-Kai-98_1.ttf";
 
         public byte[] GetFont(string faceName)
         {
+            cusFontName = faceName;
 
             return File.ReadAllBytes($"{BaseFontPath}{faceName}");
-
         }
 
         public FontResolverInfo ResolveTypeface(string familyName, bool isBold, bool isItalic)
         {
-            return new FontResolverInfo(familyName, isBold, isItalic);
+            return new FontResolverInfo(cusFontName, isBold, isItalic);
         }
     }
 }
