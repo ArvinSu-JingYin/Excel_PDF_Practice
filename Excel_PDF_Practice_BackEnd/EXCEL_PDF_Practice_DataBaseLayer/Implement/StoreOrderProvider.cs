@@ -38,6 +38,17 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
             _messageHelper = cusErroMessageHelper;
         }
 
+        /// <summary>
+        /// Get Store Orders
+        /// </summary>
+        /// <param name="num">The order number to filter by</param>
+        /// <returns>An IEnumerable of dynamic objects representing the store orders</returns>
+        /// <info>Author: Arvin; Date: 2024/09/12  </info>
+        /// <history>
+        /// xx.  YYYY/MM/DD   Ver   Author      Comments
+        /// ===  ==========  ====  ==========  ==========
+        /// 01.  2024/09/12  1.00    Arvin       Create GetStoreOrders
+        /// </history>
         public IEnumerable<dynamic> GetStoreOrders(string num)
         {
             StringBuilder sql = new StringBuilder();
@@ -71,16 +82,6 @@ namespace EXCEL_PDF_Practice_DataBaseLayer.Implement
 
                     foreach (var query in queries)
                     {
-                        //var data = new StoreOrderResultDto
-                        //{
-                        //    OrderNumber = query.Result.OrderNumber,
-                        //    Store = query.Result.Store,
-                        //    ProductName = query.Result.ProductName,
-                        //    Price = query.Result.Price,
-                        //    Quantity = query.Result.Quantity,
-                        //    OrderDate = query.Result.OrderDate,
-                        //};
-
                         var data = _mapper.Map<StoreOrderResultDto>(query);
 
                         storeOrderResultDto.Add(data);
