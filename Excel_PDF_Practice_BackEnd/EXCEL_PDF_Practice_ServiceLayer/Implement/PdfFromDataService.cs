@@ -7,9 +7,7 @@ using PdfSharpCore.Pdf;
 using MigraDocCore.Rendering;
 using MigraDocCore.DocumentObjectModel;
 using MigraDocCore.DocumentObjectModel.Tables;
-using EXCEL_PDF_Practice_DataBaseLayer;
 using EXCEL_PDF_Practice_DataBaseLayer.Interface;
-using EXCEL_PDF_Practice_DataBaseLayer.Implement;
 using EXCEL_PDF_Practice_ParameterLayer.ServiceModel.DataModel;
 using EXCEL_PDF_Practice_ParameterLayer.DataBaseModel.ResultDto;
 

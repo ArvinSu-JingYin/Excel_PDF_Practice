@@ -2,9 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using EXCEL_PDF_Practice_ServiceLayer.Interface;
-using System.Collections.Generic;
 using AutoMapper;
-using EXCEL_PDF_Practice_ParameterLayer.ServiceModel.ResultModel;
 using EXCEL_PDF_Practice_ParameterLayer.SlnModel.SearchModel;
 
 namespace EXCEL_PDF_Practice_sln.Controllers

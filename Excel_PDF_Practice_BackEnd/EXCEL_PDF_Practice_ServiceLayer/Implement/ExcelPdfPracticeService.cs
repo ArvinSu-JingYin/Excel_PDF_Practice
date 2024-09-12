@@ -1,16 +1,9 @@
-﻿using EXCEL_PDF_Practice_ParameterLayer.ServiceModel.ResultModel;
-using EXCEL_PDF_Practice_ServiceLayer.Interface;
-using System;
-using System.Collections.Generic;
+﻿using EXCEL_PDF_Practice_ServiceLayer.Interface;
 using System.Data;
-using System.Linq;
-using System.Text;
 using AutoMapper;
-using EXCEL_PDF_Practice_ParameterLayer;
 using EXCEL_PDF_Practice_ParameterLayer.SlnModel.SearchModel;
 using EXCEL_PDF_Practice_ParameterLayer.ServiceModel.DataModel;
 using EXCEL_PDF_Practice_DataBaseLayer.Interface;
-using Microsoft.IdentityModel.Tokens;
 using CommonHelper.Interface;
 using Microsoft.Extensions.Logging;
 
@@ -109,22 +102,19 @@ namespace EXCEL_PDF_Practice_ServiceLayer.Implement
         /// </history>
         private bool HasEmptyFields(GetExcelFromTemplateXlsxContextSearchModel row)
         {
-            // Get all properties of the model
+
             var propertiesToCheck = row.GetType().GetProperties();
 
-            // Iterate over each property and check its value for null
             foreach (var prop in propertiesToCheck)
             {
                 var propertyValue = prop.GetValue(row);
 
-                // If any empty field is found, return true immediately
                 if (propertyValue == null)
                 {
                     return true;
                 }
             }
 
-            // If all properties are non-empty, return false
             return false;
         }
     }
